@@ -94,14 +94,14 @@ def list_customers(
     return success_response(message="Customers fetched successfully", data=data)
 
 
-@app.get("/customers/{customer_id}")
+@app.get("/customers/{id}")
 def get_customer(
-    customer_id: str,
+    id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    logger.info("GET /customers/%s — user=%s", customer_id, current_user.username)
-    customer = CustomerController.get_by_id(customer_id, db)
+    logger.info("GET /customers/%s — user=%s", id, current_user.username)
+    customer = CustomerController.get_by_id(id, db)
     return success_response(
         message="Customer fetched successfully",
         data=CustomerResponse.model_validate(customer).model_dump(mode="json"),
@@ -126,29 +126,29 @@ def create_customer(
     )
 
 
-@app.put("/customers/{customer_id}")
+@app.put("/customers/{id}")
 def update_customer(
-    customer_id: str,
+    id: str,
     payload: CustomerUpdate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    logger.info("PUT /customers/%s — user=%s", customer_id, current_user.username)
-    customer = CustomerController.update(customer_id, payload, db)
-    logger.info("PUT /customers/%s — updated successfully", customer_id)
+    logger.info("PUT /customers/%s — user=%s", id, current_user.username)
+    customer = CustomerController.update(id, payload, db)
+    logger.info("PUT /customers/%s — updated successfully", id)
     return success_response(
         message="Customer updated successfully",
         data=CustomerResponse.model_validate(customer).model_dump(mode="json"),
     )
 
 
-@app.delete("/customers/{customer_id}", status_code=200)
+@app.delete("/customers/{id}", status_code=200)
 def delete_customer(
-    customer_id: str,
+    id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    logger.info("DELETE /customers/%s — user=%s", customer_id, current_user.username)
-    CustomerController.delete(customer_id, db)
-    logger.info("DELETE /customers/%s — deleted successfully", customer_id)
+    logger.info("DELETE /customers/%s — user=%s", id, current_user.username)
+    CustomerController.delete(id, db)
+    logger.info("DELETE /customers/%s — deleted successfully", id)
     return success_response(message="Customer deleted successfully")
