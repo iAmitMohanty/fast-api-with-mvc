@@ -62,15 +62,15 @@ fast-api-crud/
 │   │   └── customer_repository.py
 │   ├── models/
 │   │   ├── user.py              # SQLAlchemy User model
-│   │   └── customer.py         # SQLAlchemy Customer model
+│   │   └── customer.py          # SQLAlchemy Customer model
 │   ├── schemas/
 │   │   ├── auth_schema.py       # Pydantic schemas for auth
-│   │   └── customer_schema.py  # Pydantic schemas for customers
+│   │   └── customer_schema.py   # Pydantic schemas for customers
 │   ├── core/
 │   │   ├── config.py            # App settings via pydantic-settings
 │   │   ├── security.py          # JWT & password utilities
 │   │   ├── dependencies.py      # FastAPI dependency: get_current_user
-│   │   └── logging_config.py   # Daily rotating file + console logging
+│   │   └── logging_config.py    # Daily rotating file + console logging
 │   ├── db/
 │   │   └── database.py          # SQLAlchemy engine, session, Base
 │   └── utils/
@@ -218,8 +218,11 @@ On validation failure (422):
   "message": "Login successful",
   "data": {
     "access_token": "<jwt>",
-    "refresh_token": "<token>",
-    "token_type": "bearer"
+    "expiresAt": "<expire token time>",
+    "userId": "<user id>",
+    "userName": "<user name>",
+    "displayName": "<dispaly name>",
+    "refresh_token": "<token>"
   }
 }
 ```
@@ -325,8 +328,6 @@ uvicorn app.main:app --reload
 The API will be available at `http://127.0.0.1:8000`.
 
 Interactive docs (Swagger UI): `http://127.0.0.1:8000/docs`
-
-ReDoc: `http://127.0.0.1:8000/redoc`
 
 ---
 
