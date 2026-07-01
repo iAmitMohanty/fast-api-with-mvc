@@ -129,10 +129,10 @@ fast-api-with-mvc/
 | Method | Path | Description |
 |---|---|---|
 | `GET` | `/customers` | List all customers |
-| `GET` | `/customers/{customer_id}` | Get a customer by ID |
+| `GET` | `/customers/{id}` | Get a customer by ID |
 | `POST` | `/customers` | Create a new customer |
-| `PUT` | `/customers/{customer_id}` | Update a customer |
-| `DELETE` | `/customers/{customer_id}` | Delete a customer |
+| `PUT` | `/customers/{id}` | Update a customer |
+| `DELETE` | `/customers/{id}` | Delete a customer |
 
 ---
 
