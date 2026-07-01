@@ -10,6 +10,7 @@ from app.core.security import (
     verify_password,
     create_access_token,
     create_refresh_token,
+    get_access_token_expiry,
     get_refresh_token_expiry,
 )
 
@@ -54,12 +55,20 @@ class AuthController:
             )
 
         access_token = create_access_token(data={"sub": user.username})
+        expires_at = get_access_token_expiry()
         refresh_token = create_refresh_token()
-        expiry = get_refresh_token_expiry()
+        refresh_expiry = get_refresh_token_expiry()
 
-        UserRepository.save_refresh_token(user, refresh_token, expiry, db)
+        UserRepository.save_refresh_token(user, refresh_token, refresh_expiry, db)
         logger.info("Login successful — username=%s", payload.username)
-        return TokenResponse(access_token=access_token, refresh_token=refresh_token)
+        return TokenResponse(
+            token=access_token,
+            expiresAt=expires_at.strftime("%Y-%m-%dT%H:%M:%S.%f") + "Z",
+            userId=user.id,
+            userName=user.username,
+            displayName=user.display_name or user.username,
+            refreshToken=refresh_token,
+        )
 
     @staticmethod
     def refresh(refresh_token: str, db: Session) -> TokenResponse:
@@ -97,12 +106,20 @@ class AuthController:
             )
 
         new_access_token = create_access_token(data={"sub": user.username})
+        new_expires_at = get_access_token_expiry()
         new_refresh_token = create_refresh_token()
         new_expiry = get_refresh_token_expiry()
 
         UserRepository.save_refresh_token(user, new_refresh_token, new_expiry, db)
         logger.info("Token refreshed — username=%s", user.username)
-        return TokenResponse(access_token=new_access_token, refresh_token=new_refresh_token)
+        return TokenResponse(
+            token=new_access_token,
+            expiresAt=new_expires_at.strftime("%Y-%m-%dT%H:%M:%S.%f") + "Z",
+            userId=user.id,
+            userName=user.username,
+            displayName=user.display_name or user.username,
+            refreshToken=new_refresh_token,
+        )
 
     @staticmethod
     def logout(current_user: User, db: Session) -> None:

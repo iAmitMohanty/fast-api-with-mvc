@@ -5,6 +5,7 @@ class UserRegister(BaseModel):
     username: str
     email: EmailStr
     password: str
+    display_name: str | None = None
 
 
 class UserLogin(BaseModel):
@@ -21,9 +22,12 @@ class UserResponse(BaseModel):
 
 
 class TokenResponse(BaseModel):
-    access_token: str
-    refresh_token: str
-    token_type: str = "bearer"
+    token: str
+    expiresAt: str
+    userId: str
+    userName: str
+    displayName: str
+    refreshToken: str
 
 
 class RefreshTokenRequest(BaseModel):

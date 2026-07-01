@@ -15,12 +15,16 @@ def verify_password(plain: str, hashed: str) -> bool:
     return pwd_context.verify(plain, hashed)
 
 
-def create_access_token(data: dict) -> str:
-    to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + timedelta(
+def get_access_token_expiry() -> datetime:
+    """Returns the expiry datetime for a new access token."""
+    return datetime.now(timezone.utc) + timedelta(
         minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES
     )
-    to_encode.update({"exp": expire})
+
+
+def create_access_token(data: dict) -> str:
+    to_encode = data.copy()
+    to_encode.update({"exp": get_access_token_expiry()})
     return jwt.encode(to_encode, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
 
 

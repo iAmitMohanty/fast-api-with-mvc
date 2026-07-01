@@ -31,6 +31,7 @@ class UserRepository:
             username=payload.username,
             email=payload.email,
             hashed_password=hashed_password,
+            display_name=payload.display_name or payload.username,
         )
         db.add(user)
         db.commit()
