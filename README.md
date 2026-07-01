@@ -51,7 +51,7 @@ A production-ready RESTful API built with **FastAPI**, **SQLAlchemy 2.0**, and *
 ## Project Structure
 
 ```
-fast-api-crud/
+fast-api-with-mvc/
 ├── app/
 │   ├── main.py                  # FastAPI app, route definitions, startup
 │   ├── controllers/
